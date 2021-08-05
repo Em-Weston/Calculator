@@ -93,6 +93,21 @@ let objCalculator = {
     },
     preview:function(data){
         console.log(data);
+        let dataType = 'number';
+        switch(data){
+            case '+':
+            case '-':
+            case '/':
+            case '*':
+                dataType = 'operator';
+            break;
+        }
+        console.log(dataType);
+        if(dataType == 'number'){
+            // do number logic
+        } else {
+            // Do operator logic
+        }
     },
     clear:function(){
         this.number1 = "";
