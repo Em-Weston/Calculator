@@ -60,14 +60,14 @@ let objCalculator = {
     },
     getAllElements:function() {
         this.objPreview = document.querySelector('.preview');
+        this.objPrevious = document.querySelector('.previous');
         this.objSum = document.querySelector('.sum');
         this.objClear = document.querySelector('.clear');
         this.objDecimal = document.querySelector('.decimal');
         this.objEquals = document.querySelector('.equals');
 
         this.arrNumbers = document.querySelectorAll('.number');
-        this.arrOperator = document.querySelectorAll('.operator');
-        
+        this.arrOperator = document.querySelectorAll('.operator'); 
     },
     addEventListeners:function(){
         let _self = this;
@@ -81,7 +81,7 @@ let objCalculator = {
         }
         for(counter=0; counter < this.arrOperator.length; counter++){
         let currentOperator = this.arrOperator[counter];
-        console.log(currentOperator);
+        // console.log(currentOperator); 
         currentOperator.addEventListener('click',function(event){
             let operator = event.target.innerHTML
             _self.preview(operator);
@@ -122,12 +122,23 @@ let objCalculator = {
             }
         } else {
             if(this.number1){
-                this.operator = data;
-            } else {
-                // return Error message
-            }
+                if(this.number2){
+                    this.autoComplete(data);
+                } else {
+                    this.operator = data;
+                }
+            } 
         }
         this.displayPreview();
+    },
+    autoComplete:function(operator){
+       let strpreviousSum = this.objPreview.value;
+       this.objPrevious.value = strpreviousSum;
+       let sum = this.calculate();
+       this.number1 = sum;
+       this.operator = operator;
+       this.number2 = "";
+       this.displayPreview();
     },
     clear:function(){
         this.number1 = "";
@@ -135,6 +146,7 @@ let objCalculator = {
         this.operator = "";
         this.objPreview.value = "";
         this.objSum.value = "";
+        this.objPrevious.value = "";
 },
 displayPreview:function(){
     let strMessage = '';
@@ -175,7 +187,7 @@ equals:function(){
 updateDisplay:function(sum){
     this.objSum.value = sum;
 },
-calculate(){
+calculate:function(){
     //declaring sum variable
     let sum;
     if(isNaN(this.number1)){
