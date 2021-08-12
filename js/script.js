@@ -93,6 +93,7 @@ let objCalculator = {
         _self.clear();
     }); 
     this.objEquals.addEventListener('click',function(event){
+        _self.blnEquals = true;
         _self.equals();
     });
     this.objDecimal.addEventListener('click',function(event){
@@ -180,7 +181,7 @@ let objCalculator = {
                 }
             break;
             case 'number2':
-                if(this.number2.indexOf('.') !== -1){
+                if(this.number2.indexOf('.') !== -1){ 
                     blnHasDecimal = true;
                     console.log('You already have a deciaml on number2')
                 }
@@ -238,7 +239,7 @@ equals:function(){
             this.updateDisplay(sum);
             if(this.blnEquals){
                 let strPreviousSum = this.objPreview.value;
-                this.objPrevious.value = stePreviousSum;
+                this.objPrevious.value = strPreviousSum;
                 this.objPreview.value = "";
                 this.number1 = "";
                 this.number2 = "";
