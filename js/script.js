@@ -54,6 +54,8 @@ let objCalculator = {
     number1: '',
     number2: '',
     operator: '',
+    blnEquals: false,
+    blnEqualsSuccess: false,
     init:function() {
         this.getAllElements();
         this.addEventListeners();
@@ -99,7 +101,11 @@ let objCalculator = {
     });
     },
     preview:function(data){
-        console.log(data);
+        // console.log(data); 
+        if(this.blnEqualsSuccess){
+            this.clear();
+            this.blnEqualsSuccess = false;
+        }
         let dataType = 'number';
         switch(data){
             case '+':
@@ -183,8 +189,8 @@ let objCalculator = {
         return blnHasDecimal;
     },
     autoComplete:function(operator){
-       let strpreviousSum = this.objPreview.value;
-       this.objPrevious.value = strpreviousSum;
+       let strPreviousSum = this.objPreview.value;
+       this.objPrevious.value = strPreviousSum;
        let sum = this.calculate();
        this.number1 = sum;
        this.operator = operator;
@@ -215,6 +221,7 @@ displayPreview:function(){
 },
 equals:function(){
     // console.log("equals");
+    console.log(this.blnEquals);
     let blnCanDoMaths = true;
     if(!this.number1){
         blnCanDoMaths = false;
@@ -229,11 +236,21 @@ equals:function(){
         let sum = this.calculate();
         if(sum !== false){
             this.updateDisplay(sum);
+            if(this.blnEquals){
+                let strPreviousSum = this.objPreview.value;
+                this.objPrevious.value = stePreviousSum;
+                this.objPreview.value = "";
+                this.number1 = "";
+                this.number2 = "";
+                this.operator = "";
+                this.blnEqualsSuccess = true;
+            }
         }
         // console.log(sum);
     } else {
         console.log("You haven't set enough variables.");
     }
+    this.blnEquals = false;
 },
 updateDisplay:function(sum){
     this.objSum.value = sum;
