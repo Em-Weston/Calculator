@@ -1,4 +1,3 @@
-console.log("Hi Emma");
 
 /*-- 
 variables - Number1, number2, operator
@@ -56,6 +55,7 @@ let objCalculator = {
     operator: '',
     blnEquals: false,
     blnEqualsSuccess: false,
+    errorMessageTimeout: false,
     init:function() {
         this.getAllElements();
         this.addEventListeners();
@@ -67,6 +67,7 @@ let objCalculator = {
         this.objClear = document.querySelector('.clear');
         this.objDecimal = document.querySelector('.decimal');
         this.objEquals = document.querySelector('.equals');
+        this.objErrorMessage = document.querySelector('.error_message');
 
         this.arrNumbers = document.querySelectorAll('.number');
         this.arrOperator = document.querySelectorAll('.operator'); 
@@ -145,7 +146,7 @@ let objCalculator = {
                     this.operator = data;
                 }
             } else {
-                // return error message
+                this.outputError('You can not set an operator without number1 having a value');
             }
             } 
         }
@@ -157,6 +158,8 @@ let objCalculator = {
             if(this.number2){
                 if(!this.hasDecimal('number2')){
                     this.number2 += '.'; 
+                } else {
+                    this.outputError('Number2 already has a decimal');
                 }
             } else {
                 this.number2 = '0.';
@@ -165,6 +168,8 @@ let objCalculator = {
                 if(this.number1){
                     if(!this.hasDecimal('number1')){
                         this.number1 += '.';
+                    } else {
+                        this.outputError('Number 1 already has a decimal');
                     }
                 } else {
                 this.number1 = '0.';
@@ -172,18 +177,18 @@ let objCalculator = {
             }
         },
         hasDecimal:function(number){
-            let blnHasDeciaml = false;
+            let blnHasDecimal = false;
             switch(number){
                 case 'number1':
                 if(this.number1.indexOf('.') !== -1){
                     blnHasDecimal = true;
-                    console.log('You already have a decimal point on number1');
+                    this.outputError('You already have a decimal point on number1');
                 }
             break;
             case 'number2':
                 if(this.number2.indexOf('.') !== -1){ 
                     blnHasDecimal = true;
-                    console.log('You already have a deciaml on number2')
+                    this.outputError('You already have a deciaml on number2')
                 }
                 break;
     }
@@ -222,7 +227,7 @@ displayPreview:function(){
 },
 equals:function(){
     // console.log("equals");
-    console.log(this.blnEquals);
+    // console.log(this.blnEquals); 
     let blnCanDoMaths = true;
     if(!this.number1){
         blnCanDoMaths = false;
@@ -249,7 +254,9 @@ equals:function(){
         }
         // console.log(sum);
     } else {
-        console.log("You haven't set enough variables.");
+        if(this.blnEquals){
+            this.outputError('You haven\'t set enough variables')
+        }
     }
     this.blnEquals = false;
 },
@@ -260,10 +267,10 @@ calculate:function(){
     //declaring sum variable
     let sum;
     if(isNaN(this.number1)){
-        return 'Number1 needs to be a number';
+        this.outputError('Number1 needs to be a number');
     }
     if(isNaN(this.number2)){
-        return 'Number2 needs to be a number';
+        this.outputError('Number2 needs to be a number');
     }
     //switch statement for operator
     switch(this.operator){
@@ -285,13 +292,22 @@ calculate:function(){
         break;
         default:
             sum = false;
+            this.outputError('You have used an unrecognised operator: ' + this.operator);
             // Error message return 'You have used an unrecognised operator: ' + this.operator;
     }
     return sum;
+},
+outputError:function(strErrorMessage){
+    _self = this;
+    clearTimeout(this.errorMessageTimeout);
+    this.objErrorMessage.innerHTML = strErrorMessage;
+    this.objErrorMessage.style.display = 'block';
+    this.errorMessageTimeout = setTimeout(function(){
+        _self.objErrorMessage.style.display = 'none';
+    }, 2500);
+    }
 }
 
-// console.log(calculator(10,5,'+'));
-}
 
 objCalculator.init();
 
