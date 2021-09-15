@@ -234,7 +234,7 @@ let objCalculator = {
     }
         return blnHasDecimal;
     },
-    //  this funcition updates the display and resets the values of each gloabl variable to make user experiance better
+    //  this function updates the display and resets the values of each gloabl variable to make user experiance better
     autoComplete:function(operator){
         //  take the old preview message
        let strPreviousSum = this.objPreview.value;
