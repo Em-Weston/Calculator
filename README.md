@@ -39,6 +39,7 @@ I have used pseudocode to annotate my notes.
 ## Sources 
 
 *[I used this helpful cheetsheet for my markdown](https://github.com/adam-p/markdown-here/wiki/Markdown-Here-Cheatsheet)
+*[View the completed project](https://scrumpyflea.github.io/Calculator/)
 
 -----
 
